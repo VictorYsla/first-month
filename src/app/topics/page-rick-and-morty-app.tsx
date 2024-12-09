@@ -1,6 +1,8 @@
 import Link from "next/link";
 import GitHubSvg from "../assets/svgs/github-logo.svg";
 import MagnificantGlasses from "../assets/svgs/magnificant-glasses.svg";
+import ArrowLeftSvg from "../assets/svgs/arrow-left.svg";
+import ArrowRigthSvg from "../assets/svgs/arrow-rigth.svg";
 
 export default function Home() {
   return (
@@ -32,6 +34,10 @@ export default function Home() {
           />
           <MagnificantGlasses className="absolute right-3 fill-black w-18 h-18" />
         </div>
+      </div>
+      <div className="flex justify-between px-32">
+        <ArrowLeftSvg className="bg-blue-500  fill-white h-18 w-36" />
+        <ArrowRigthSvg className="bg-blue-500 fill-white h-18 w-36" />
       </div>
     </div>
   );
