@@ -1,5 +1,6 @@
 import Link from "next/link";
 import GitHubSvg from "../assets/svgs/github-logo.svg";
+import MagnificantGlasses from "../assets/svgs/magnificant-glasses.svg";
 
 export default function Home() {
   return (
@@ -22,6 +23,15 @@ export default function Home() {
           <GitHubSvg className="w-10 h-10 fill-black lg:w-12 lg:h-12" />
           <span className="sr-only">GitHub</span>
         </Link>
+      </div>
+      <div className="flex items-center h-16 items-center justify-center">
+        <div className="relative flex items-center  ">
+          <input
+            placeholder="Name of character..."
+            className="pl-4 pr-10 py-2 w-[384px] border-[3px] border-green-500 focus:border-blue-500  outline-none text-black h-11 placeholder:italic placeholder:font-semibold  border p-2 "
+          />
+          <MagnificantGlasses className="absolute right-3 fill-black w-18 h-18" />
+        </div>
       </div>
     </div>
   );
