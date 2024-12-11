@@ -8,6 +8,9 @@ const nextConfig: NextConfig = {
     });
     return config;
   },
+  images: {
+    domains: ["rickandmortyapi.com"],
+  },
 };
 
 export default nextConfig;
