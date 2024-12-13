@@ -40,7 +40,7 @@ const CharacterCard: React.FC<CharacterCardProps> = ({
         alt={name}
         width={500}
         height={220}
-        className="w-full h-[220px] object-cover"
+        className="object-cover"
         priority
       />
       <div className="p-4">

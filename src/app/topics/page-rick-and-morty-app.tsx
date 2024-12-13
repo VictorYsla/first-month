@@ -12,11 +12,13 @@ import CharacterCard from "./components/CharacterCard";
 
 export default function Home() {
   const [results, setResults] = useState<Result[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [hasError, setHasError] = useState("");
+
+  //valores similares a false: false, ", null, undifined, 0
 
   //Llamado al API para obtener data
   const getRickAndMortyCharacters = async () => {
-    setLoading(true);
     try {
       const response = await axios.get(
         "https://rickandmortyapi.com/api/character"
@@ -26,12 +28,11 @@ export default function Home() {
 
       setResults(charactersResponse.results);
       console.log({ response });
-      setTimeout(() => {
-        setLoading(false);
-      }, 5000);
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
       setLoading(false);
+      setHasError("Ups algo falló");
     }
   };
 
@@ -69,18 +70,41 @@ export default function Home() {
   // });
   // console.log("Desestructurando mi primer objeto:", { ...firstCharacter });
 
+  //if-else
+  const firstNumber = 1;
+  const secondNumber = 2;
+  const condition = secondNumber > firstNumber; // true || false
+  const isGreaterThan = `${secondNumber} es mayor a ${firstNumber}`;
+  const isLessThan = `${secondNumber} no es mayor a ${firstNumber}`;
+
+  const ifElse = () => {
+    if (condition) {
+      return isGreaterThan;
+    } else {
+      return isLessThan;
+    }
+  };
+  //Operado ternario
+  //condition? a : b
+
+  const operatorResult = condition ? isGreaterThan : isLessThan;
+
+  console.log({ operatorResult });
+  console.log({ ifElse: ifElse() });
+
   return (
     <div className="bg-white min-h-screen">
       {/* Modal de carga */}
+
       {loading && (
         <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="text-white flex flex-col items-center">
-            {/* Activity Indicator (spinner) */}
             <div className="w-16 h-16 border-4 border-t-4 border-white border-solid rounded-full animate-spin"></div>
             <p className="mt-4 text-xl font-semibold">Cargando...</p>
           </div>
         </div>
       )}
+
       <div className="flex h-16 items-center justify-between px-4 py-12 md:px-6 bg-[rgb(241,245,249)] bg-opacity-75 rounded-lg shadow-lg border-b-4 border-transparent hover:border-b-gray-300">
         <Link href="/" className="flex items-center">
           <span className="text-2xl font-semibold">
@@ -113,7 +137,11 @@ export default function Home() {
         <ArrowLeftSvg className="bg-blue-500  fill-white h-18 w-36" />
         <ArrowRigthSvg className="bg-blue-500 fill-white h-18 w-36" />
       </div>
-
+      {hasError && (
+        <div className="w-full flex justify-center">
+          <span className="text-red-500 text-lg">{hasError}</span>
+        </div>
+      )}
       <div className="max-w-full p-4 flex flex-col md:flex-row md:flex-wrap space-y-6 md:space-y-0 gap-8 items-center md:justify-center">
         {results.map((character) => (
           <CharacterCard key={character.id} {...character} />
