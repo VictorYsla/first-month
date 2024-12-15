@@ -7,27 +7,46 @@ import ArrowLeftSvg from "../assets/svgs/arrow-left.svg";
 import ArrowRigthSvg from "../assets/svgs/arrow-rigth.svg";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { CharactersResponseTypes, Result } from "./types";
+import { CharactersResponseTypes, Characters } from "./types";
 import CharacterCard from "./components/CharacterCard";
 
 export default function Home() {
-  const [results, setResults] = useState<Result[]>([]);
+  const [characters, setCharacters] = useState<Characters[]>([]);
   const [loading, setLoading] = useState(true);
   const [hasError, setHasError] = useState("");
+  const [page, setPage] = useState(1);
 
   //valores similares a false: false, ", null, undifined, 0
 
+  /**
+   * Añadir paginación
+   * Identificar como pasarle el valor para seleccionar la página adecuada
+   * Añadir el parámetro al API "?page=NUMERO-AQUÍ"
+   * Verificar que la paginación funcione
+   * Utilizar template strings para hacer dinámica la paginación
+   * Añadir la variable al template string
+   * Pasarle el parámetro page a la función getRickAndMortyCharacters
+   * Probar si los SVGS utilizados aceptan la propiedad onClick
+   * Funcionó, entonces, colocar la función getRickAndMortyCharacters con su respectivo parámetro, esto para pruebas
+   * Añadir un estado(useState) "page" para hacer dinámica la paginación
+   * Colocar el setPage en los SVGS correspondientes
+   * Colocar page en el useEffect correspondiente
+   * Hacer que la flecha left se pinte de gris y no reste valor a page si es igual a 1
+   * Hacer que la flecha right no sume si es la última página
+   */
+
   //Llamado al API para obtener data
   const getRickAndMortyCharacters = async () => {
+    setLoading(true);
     try {
       const response = await axios.get(
-        "https://rickandmortyapi.com/api/character"
+        `https://rickandmortyapi.com/api/character?page=${page}`
       );
 
       const charactersResponse: CharactersResponseTypes = response.data;
 
-      setResults(charactersResponse.results);
-      console.log({ response });
+      setCharacters(charactersResponse.results);
+      console.log({ charactersResponse });
       setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -42,13 +61,13 @@ export default function Home() {
 
   // console.log("Array sumado:", addOne);
 
-  console.log("results:", results);
-
   useEffect(() => {
+    console.log("results:", characters);
     getRickAndMortyCharacters();
-  }, []);
+    console.log({ page });
+  }, [page]);
 
-  //KeyNotes: Desestructuración,Iteración, spreed
+  //KeyNotes: Desestructuración,Iteración, spreed, paginación , .length
 
   // const firstCharacter = {
   //   name: "Popeye",
@@ -134,8 +153,26 @@ export default function Home() {
         </div>
       </div>
       <div className="flex justify-between px-32 mb-6">
-        <ArrowLeftSvg className="bg-blue-500  fill-white h-18 w-36" />
-        <ArrowRigthSvg className="bg-blue-500 fill-white h-18 w-36" />
+        <ArrowLeftSvg
+          className={`${
+            page === 1 ? "bg-gray-500" : "bg-blue-500"
+          } fill-white h-18 w-36`}
+          onClick={() => {
+            if (page > 1) {
+              setPage(page - 1);
+            }
+          }}
+        />
+        <ArrowRigthSvg
+          className={`${
+            characters.length < 20 ? "bg-gray-500" : "bg-blue-500"
+          } fill-white h-18 w-36`}
+          onClick={() => {
+            if (characters.length === 20) {
+              setPage(page + 1);
+            }
+          }}
+        />
       </div>
       {hasError && (
         <div className="w-full flex justify-center">
@@ -143,7 +180,7 @@ export default function Home() {
         </div>
       )}
       <div className="max-w-full p-4 flex flex-col md:flex-row md:flex-wrap space-y-6 md:space-y-0 gap-8 items-center md:justify-center">
-        {results.map((character) => (
+        {characters.map((character) => (
           <CharacterCard key={character.id} {...character} />
         ))}
       </div>

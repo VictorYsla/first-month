@@ -1,6 +1,6 @@
 export interface CharactersResponseTypes {
   info: Info;
-  results: Result[];
+  results: Characters[];
 }
 
 export interface Info {
@@ -10,7 +10,7 @@ export interface Info {
   prev: null;
 }
 
-export interface Result {
+export interface Characters {
   id: number;
   name: string;
   status: Status;
