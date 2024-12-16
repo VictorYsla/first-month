@@ -34,7 +34,7 @@ const CharacterCard: React.FC<CharacterCardProps> = ({
       : "text-gray-600";
 
   return (
-    <div className="w-[250px] h-[420px] border-[3px] border-blue-500 rounded-t-md overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
+    <div className="w-[230px] h-[420px] border-[3px] border-blue-500 rounded-t-md overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
       <Image
         src={image}
         alt={name}
