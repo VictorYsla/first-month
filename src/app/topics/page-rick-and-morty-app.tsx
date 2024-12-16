@@ -35,6 +35,15 @@ export default function Home() {
    * Hacer que la flecha right no sume si es la última página
    */
 
+  /**
+   * SearchBar
+   * Crear un searchbar
+   * Establecer los estilos
+   * Crear la función search
+   * Actualizar el estado (useState) que guarde los nuevos valores de "characters"
+   * Colocar las validaciones correspondientes
+   */
+
   //Llamado al API para obtener data
   const getRickAndMortyCharacters = async () => {
     setLoading(true);
@@ -52,6 +61,36 @@ export default function Home() {
       console.error("Error fetching data:", error);
       setLoading(false);
       setHasError("Ups algo falló");
+    }
+  };
+
+  const searchCharacters = async (query: string) => {
+    const condition = query.trim(); // "       ".trim() => ""
+
+    if (!condition) {
+      //trim remueve todos los espacios que hay dentro de un string "p o l l o".trim() => "pollo" quiere decir "       ".trim() => ""
+      return; // este return te saca de la función searchCharacters y ya no haría lo que está debajo y dentro del scope
+    }
+
+    setPage(1);
+
+    setLoading(true);
+    setHasError("");
+
+    try {
+      const response = await axios.get(
+        `https://rickandmortyapi.com/api/character/?name=${query}&page=${page}`
+      );
+
+      const charactersResponse: CharactersResponseTypes = response.data;
+
+      setCharacters(charactersResponse.results);
+      setLoading(false);
+    } catch (error) {
+      console.log("Error searching characters:", error);
+      setLoading(false);
+      setCharacters([]);
+      setHasError("No se encontraron personajes con ese nombre.");
     }
   };
 
@@ -148,11 +187,14 @@ export default function Home() {
           <input
             placeholder="Name of character..."
             className="pl-4 pr-10 py-2 w-[384px] border-[3px] border-green-500 focus:border-blue-500  outline-none text-black h-11 placeholder:italic placeholder:font-semibold  p-2 "
+            onChange={(e) => {
+              searchCharacters(e.target.value);
+            }}
           />
           <MagnificantGlasses className="absolute right-3 fill-black w-18 h-18" />
         </div>
       </div>
-      <div className="flex justify-between px-32 mb-6">
+      <div className="flex justify-between px-[52px] mb-6">
         <ArrowLeftSvg
           className={`${
             page === 1 ? "bg-gray-500" : "bg-blue-500"
